@@ -1,0 +1,92 @@
+:root {
+    --bs-primary: #003e83;
+    --bs-primary-rgb: 0, 86, 179;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    background: #f8f9fa;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.nav-link-sidebar {
+    color: #546e7a;
+    font-weight: 500;
+    border-radius: 8px;
+    margin-right: 15px;
+    padding: 5px 20px;
+    transition: all 0.2s ease-in-out;
+    margin-left: 5px;
+}
+
+.nav-link-sidebar:hover {
+    background-color: #f0f0f0;
+    color: #03a9f3;
+}
+
+.nav-link-sidebar.active-custom {
+    background-color: #0d91db;
+    color: white !important;
+}
+
+.verde {
+    color: forestgreen;
+}
+
+.cinza {
+    color: dimgray;
+}
+
+.vermelho {
+    color: indianred;
+}
+
+.swal2-fade-in {
+    animation: fadePuroIn 0.3s ease-out !important;
+}
+
+.swal2-fade-out {
+    animation: fadePuroOut 0.2s ease-in !important;
+}
+
+@keyframes fadePuroIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadePuroOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}

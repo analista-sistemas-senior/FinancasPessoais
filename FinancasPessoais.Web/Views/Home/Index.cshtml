@@ -1,0 +1,181 @@
+﻿@model FinancasPessoais.Web.ViewModels.Reports.RelatorioHomeViewModel
+@{
+    ViewData["Title"] = "Início";
+}
+<div class="p-4 pb-0 row small text-muted fw-semibold">
+    <div class="col-12 m-0">
+        Hoje, @DateTime.Today.ToString("dddd dd 'de' MMMM 'de' yyyy")
+    </div>
+</div>
+<div class="p-4">
+    <div class="card-header bg-light py-3 px-2 mb-2 rounded-2">
+        <h5 class="card-title m-0 fw-bold text-secondary">
+            Totais
+        </h5>
+    </div>
+    <div class="row g-4 fw-semibold">
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Investido</span>
+                    <span class="card-title text-success m-0">@Model.TotalInvestimento</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Receitas</span>
+                    <span class="card-title text-success m-0">@Model.TotalReceita</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Despesas</span>
+                    <span class="card-title text-danger m-0">@Model.TotalDespesa</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Juros</span>
+                    <span class="card-title text-success m-0">@Model.TotalJuro</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Aportes</span>
+                    <span class="card-title text-secondary m-0">@Model.TotalAporte</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4 col-xxl-2">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="card-body p-0">
+                    <span class="text-muted small d-block text-uppercase mb-1">Saques</span>
+                    <span class="card-title text-danger m-0">@Model.TotalSaque</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-4">
+    <div class="row g-4">
+        <div class="col-12 col-md-12 col-xxl-6">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold text-secondary mb-3">Evolução dos investimentos</h5>
+                <div id="graficoInvestimentos" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-xxl-6">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold text-secondary mb-3">Fluxo de caixa</h5>
+                <div id="graficoReceitasDespesas" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="p-4">
+    <div class="row g-4">
+        <div class="col-12 col-md-12 col-xxl-6">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold text-secondary mb-3">Investimentos por tipos</h5>
+                <div id="graficoInvestimentosTipos" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-12 col-xxl-6">
+            <div class="card shadow-sm border-0 p-4">
+                <h5 class="fw-bold text-secondary mb-3">Despesas por fontes</h5>
+                <div id="graficoDespesasFontes" style="width: 100%; height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/echarts/echarts.min.js"></script>
+    <script>
+        var graficoInvestimentosContinente = document.getElementById('graficoInvestimentos');
+        var echartGraficoInvestimentos = echarts.init(graficoInvestimentosContinente);
+        var investimento12MesesRotulos = JSON.parse('@Html.Raw(Model.Investimentos12MesesRotulosJson)');
+        var investimento12MesesValores = JSON.parse('@Html.Raw(Model.Investimentos12MesesValoresJson)');
+        var opcaoGraficoInvestimentos = {
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, 
+                       formatter: function (params) {
+                            var item = params[0];
+                            var valorFormatado = Number(item.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                            return item.name + '<br/>' + item.seriesName + ' <strong>' + valorFormatado + '</strong>';
+                       }
+                     },
+            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+            xAxis: [{ type: 'category', data: investimento12MesesRotulos, axisTick: { alignWithLabel: true } }],
+            yAxis: [{ type: 'value' }],
+            series: [{ name: 'Total investido', type: 'bar', barWidth: '60%', data: investimento12MesesValores, itemStyle: { color: '#256fbe' } }]
+        };
+        opcaoGraficoInvestimentos && echartGraficoInvestimentos.setOption(opcaoGraficoInvestimentos);
+
+        var graficoReceitasDespesasContinente = document.getElementById('graficoReceitasDespesas');
+        var echartGraficoReceitasDespesas = echarts.init(graficoReceitasDespesasContinente);
+        var fluxoCaixa12MesesRotulos = JSON.parse('@Html.Raw(Model.FluxoCaixa12MesesRotulosJson)');
+        var fluxoCaixa12MesesReceitas = JSON.parse('@Html.Raw(Model.FluxoCaixa12MesesReceitasJson)');
+        var fluxoCaixa12MesesDespesas = JSON.parse('@Html.Raw(Model.FluxoCaixa12MesesDespesasJson)');
+        var opcaoGraficoReceitasDespesas = {
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' }, 
+                       formatter: function (params) {
+                           var r = Number(params[0].value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                           var d = Number(params[1].value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                           return '<strong>' + params[0].name + '</strong><br/>' + params[0].marker + ' Receitas: <strong>' + r + '</strong><br/>' + params[1].marker + ' Despesas: <strong>' + d + '</strong>';
+                       }
+                     },
+            legend: { data: ['Receitas', 'Despesas'], top: '5%' },
+            grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+            xAxis: [{ type: 'category', data: fluxoCaixa12MesesRotulos, axisTick: { alignWithLabel: true } }],
+            yAxis: [{ type: 'value', axisLabel: { 
+                        formatter: function (value) {
+                            return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+                        }
+                    }}],
+            series: [{ name: 'Receitas', type: 'bar', barGap: '10%', barWidth: '30%', data: fluxoCaixa12MesesReceitas, itemStyle: { color: '#198754' }},
+                     { name: 'Despesas', type: 'bar', barWidth: '30%', data: fluxoCaixa12MesesDespesas,  itemStyle: { color: '#dc3545' }}]
+        };
+        opcaoGraficoReceitasDespesas && echartGraficoReceitasDespesas.setOption(opcaoGraficoReceitasDespesas);
+
+        var graficoInvestimentosTiposContinente = document.getElementById('graficoInvestimentosTipos');
+        var echartGraficoInvestimentosTipos = echarts.init(graficoInvestimentosTiposContinente);
+        var investimentosPorTipos = JSON.parse('@Html.Raw(Model.InvestimentosPorTiposJson)');
+        investimentosPorTipos = investimentosPorTipos.map(item => ({ value: item.Value, name: item.Name }));
+        var opcaoGraficoInvestimentosTipos = {
+            tooltip: { trigger: 'item', formatter: params => `${params.seriesName} <br/>${params.name}: <strong>${Number(params.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> (${Number(params.percent).toLocaleString('pt-BR')}%)` },
+            legend: { top: '5%', left: 'center' },
+            series: [{ name: 'Tipo de investimento', type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false, itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+                    label: { show: false,  position: 'center' }, emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' } },
+                    labelLine: { show: false }, data: investimentosPorTipos }]
+        };
+        opcaoGraficoInvestimentosTipos && echartGraficoInvestimentosTipos.setOption(opcaoGraficoInvestimentosTipos);
+
+        var graficoDespesasFontesContinente = document.getElementById('graficoDespesasFontes');
+        var echartGraficoDespesasFontes = echarts.init(graficoDespesasFontesContinente);
+        var despesasPorFontes = JSON.parse('@Html.Raw(Model.DespesasPorFontesJson)');
+        despesasPorFontes = despesasPorFontes.map(item => ({ value: item.Value, name: item.Name }));
+        var opcaoGraficoDespesasFontes = {
+            tooltip: { trigger: 'item', formatter: params => `${params.seriesName} <br/>${params.name}: <strong>${Number(params.value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</strong> (${Number(params.percent).toLocaleString('pt-BR')}%)` },
+            legend: { top: '5%', left: 'center' },
+            series: [{ name: 'Fonte de despesa', type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false, itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
+            label: { show: false,  position: 'center' }, emphasis: { label: { show: true, fontSize: 16, fontWeight: 'bold' } },
+            labelLine: { show: false }, data: despesasPorFontes }]
+        };
+        opcaoGraficoDespesasFontes && echartGraficoDespesasFontes.setOption(opcaoGraficoDespesasFontes);
+
+        window.addEventListener('resize', function() {
+            echartGraficoReceitasDespesas.resize();
+            echartGraficoInvestimentos.resize();
+            echartGraficoInvestimentosTipos.resize();
+            echartGraficoDespesasFontes.resize();
+        });
+
+    </script>
+}

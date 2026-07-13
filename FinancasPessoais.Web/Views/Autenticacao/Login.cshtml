@@ -1,0 +1,50 @@
+﻿@{
+    Layout = "_LayoutSimples";
+    ViewData["Title"] = "Login";
+}
+<div class="row justify-content-center align-items-center mt-5">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-gradient text-white d-inline-block p-2 rounded-circle mb-3 shadow">
+                        <i class="bi bi-currency-dollar fs-3 mx-2"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark m-0">Finanças Pessoais</h4>
+                </div>
+                @if (TempData["SessaoExpirada"] != null)
+                {
+                    <div class= "alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                        @TempData["SessaoExpirada"]
+                    </div>
+                }
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                        <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+                    </div>
+                }
+                <form asp-controller="Autenticacao" asp-action="Login" method="post" autocomplete="off">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label for="login" class="form-label small fw-semibold text-secondary mb-1">Usuário</label>
+                        <input type="text" id="login" name="login" class="form-control border-2 shadow-sm" placeholder="Digite seu usuário para login" required autofocus/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cdSenha" class="form-label small fw-semibold text-secondary mb-1">Senha</label>
+                        <input type="password" id="cdSenha" name="cdSenha" class="form-control border-2 shadow-sm" placeholder="Digite sua senha" required/>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center mb-4">
+                        <label class="form-label small fw-semibold text-secondary">Não tem usuário? <a asp-action="Registro" asp-controller="Usuario">Registre-se aqui</a>.</label>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center mb-2">
+                        <button type="submit" class="btn btn-primary fw-bold shadow-sm">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p class="text-muted small">&copy; @DateTime.Now.ToString("yyyy") - Finanças Pessoais</p>
+        </div>
+    </div>
+</div>

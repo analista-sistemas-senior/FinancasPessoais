@@ -1,0 +1,257 @@
+﻿@model IEnumerable<FinancasPessoais.Web.ViewModels.InvestimentoViewModel>
+@{
+    ViewData["Title"] = "Histórico dos investimentos";
+}
+<link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css"/>
+<div class="p-3 p-md-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+        <h1 class="fs-3 text-secondary m-0"><i class="bi bi-bar-chart-line-fill"></i> @ViewData["Title"]</h1>
+        <div class="d-flex flex-row align-self-end align-self-md-center align-items-center">
+            <i class="bi bi-question-circle fs-4 me-3 mb-0 cursor-pointer" title="Ajuda" data-bs-toggle="modal" data-bs-target="#modalAjuda"></i>
+            <a class="btn btn-primary fw-bold shadow-sm me-2" asp-action="Criacao"><i class="bi bi-file-earmark-plus me-2"></i>Novo</a>
+            <a class="btn btn-secondary fw-bold shadow-sm" asp-action="RelatorioVariacao"><i class="bi bi-percent me-2"></i>Variação</a>
+        </div>
+    </div>
+    <hr/>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="table-responsive">
+        <table id="tabelaInvestimentoHistorico" class="table align-middle m-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.NMInvestimento)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.DTInvestimento)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.DTVencimento)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">Dias restantes</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.PCTaxaRentabilidade)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.VLInvestimento)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.VLSaldo)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var investimento in Model)
+                {
+                    <tr>
+                        <td>@investimento.NMInvestimento</td>
+                        <td data-order="@investimento.DTInvestimento.ToString("yyyyMMddHHmmss")">@investimento.DTInvestimento.ToString("dd/MM/yyyy HH:mm")</td>
+                        @if (investimento.DTVencimento.HasValue)
+                        {
+                            TimeSpan diferenca = investimento.DTVencimento.Value.Date - DateTime.Today;
+
+                            <td data-order="@investimento.DTVencimento.Value.ToString("yyyyMMddHHmmss")">@investimento.DTVencimento.Value.ToString("dd/MM/yyyy")</td>
+                            @if (diferenca.Days > 0)
+                            {
+                                <td>@diferenca.Days dia(s)</td>
+                            }
+                            else
+                            {
+                                <td>-</td>
+                            }
+                        }
+                        else
+                        {
+                            <td>-</td>
+                            <td>-</td>
+                        }
+                        <td>
+                            @investimento.PCTaxaRentabilidade
+                            %
+                            @Html.DisplayFor(modelItem => investimento.INTaxaPeriodicidade)
+                            (@investimento.InvestimentoTipoViewModel!.SGInvestimentoTipo)
+                        </td>
+                        <td>
+                            @if (investimento.VLInvestimento > 0)
+                            {
+                                <span class="verde fw-semibold">@investimento.VLInvestimento.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                            @if (investimento.VLInvestimento == 0)
+                            {
+                                <span class="cinza fw-semibold">@investimento.VLInvestimento.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                            @if (investimento.VLInvestimento < 0)
+                            {
+                                <span class="vermelho fw-semibold">@investimento.VLInvestimento.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                        </td>
+                        <td>
+                            @if (investimento.VLSaldo > 0)
+                            {
+                                <span class="verde fw-semibold">@investimento.VLSaldo.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                            @if (investimento.VLSaldo == 0)
+                            {
+                                <span class="cinza fw-semibold">@investimento.VLSaldo.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                            @if (investimento.VLSaldo < 0)
+                            {
+                                <span class="vermelho fw-semibold">@investimento.VLSaldo.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span>
+                            }
+                        </td>
+                        <td class="d-flex align-items-center">
+                            <i class="bi bi-arrow-90deg-down btn-carregar cursor-pointer mx-2" title="Mostrar histórico" data-url="@Url.Action("RetornarInvestimentosHistoricos", "InvestimentoHistorico")" data-botao="@investimento.IDInvestimentoCriptografado"></i>
+                            <a asp-controller="InvestimentoHistorico" asp-action="Criacao" asp-route-id="@investimento.IDInvestimentoCriptografado" title="Novo histórico" class="text-dark fs-5"><i class="bi bi-plus"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalAjuda" tabindex="-1" aria-labelledby="modalAjudaLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-opacity-10 bg-black border-bottom-0 py-3">
+                <h5 class="modal-title fw-bold d-flex align-items-center" id="modalAjudaLabel">
+                    <i class="bi bi-info-circle me-2"></i> Entendendo o histórico de investimentos
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="text-secondary mb-3">
+                    O histórico de investimentos registra a linha do tempo e a evolução das suas aplicações. 
+                    É através desta tela que você documenta a movimentação dos seus investimentos, permitindo que o sistema calcule o saldo e mantenha o histórico do seu patrimônio ao longo do tempo.
+                </p>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-secondary btn-sm fw-bold px-3" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            new DataTable('#tabelaInvestimentoHistorico', {
+                language: { url: '/lib/datatables-plugins/i18n/pt-BR.json' },
+                pageLength: 50,
+                columnDefs: [
+                    { type: 'date-eu', targets: [1,2] }
+                ],
+                order: [[1, 'desc']]
+            });
+
+            $('#tabelaInvestimentoHistorico').on('click', '.btn-excluir', function () {
+                const urlDestino = $(this).data('url');
+                const idCriptografado = $(this).data('id');
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                Swal.fire({
+                    title: "Excluir item?",
+                    text: "Depois de excluído, não poderá ser recuperado!",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonColor: "#0d6efd",
+                    confirmButtonText: "Sim",
+                    cancelButtonText: "Não",
+                    showClass: { popup: 'swal2-fade-in' },
+                    hideClass: { popup: 'swal2-fade-out' }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: urlDestino,
+                            type: 'POST',
+                            headers: {
+                                'RequestVerificationToken': token 
+                            },
+                            data: { id: idCriptografado },
+                            success: function (resposta) {
+                                if (resposta.sucesso) {
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire("Não foi possível apagar!", "Este item está sendo utilizado em outras telas!");
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+            $('#tabelaInvestimentoHistorico').on('click', '.btn-carregar', function () {
+                const botao = $(this);
+                const urlDestino = $(this).data('url');
+                const idCriptografado = $(this).data('botao');
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                const tabelaPrincipal = $('#tabelaInvestimentoHistorico').DataTable();
+                const trMae = botao.closest('tr');
+                const linha = tabelaPrincipal.row(trMae);
+
+                if (linha.child.isShown()) {
+                    linha.child.hide();
+                    trMae.removeClass('shown');
+                    botao.removeClass('bi-arrow-90deg-up text-danger').addClass('bi-arrow-90deg-down');
+                    return;
+                }
+
+                $.ajax({
+                    url: urlDestino,
+                    type: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token 
+                    },
+                    data: { id: idCriptografado },
+                    success: function (resposta) {
+                        if (resposta.sucesso) {
+
+                            if (resposta.dados.length === 0) {
+                                Swal.fire("Nenhum histórico!", "Nenhum histórico encontrado para este investimento!");
+                                return;
+                            }
+                            let htmlSubTabela = `
+                                <div class="p-0 m-0 mb-5 border-start border-end border-secundary">
+                                    <table class="table table-hover align-middle m-0">
+                                        <thead>
+                                            <th class="text-secondary small fw-bold text-uppercase ps-3" style="background:#f8f9fa">Data</th>
+                                            <th class="text-secondary small fw-bold text-uppercase ps-3" style="background:#f8f9fa">Movimento</th>
+                                            <th class="text-secondary small fw-bold text-uppercase ps-3" style="background:#f8f9fa">Valor</th>
+                                            <th class="text-secondary small fw-bold text-uppercase ps-3" style="background:#f8f9fa">Saldo</th>
+                                            <th class="text-secondary small fw-bold text-uppercase ps-3" style="background:#f8f9fa"></th>
+                                        </thead>
+                                        <tbody>`;
+                            resposta.dados.forEach(function (item) {
+
+                                const urlAtualizar = `/InvestimentoHistorico/Atualizacao/${item.id}`;
+                                const urlExcluir = `/InvestimentoHistorico/Exclusao`;
+
+                                htmlSubTabela += `
+                                    <tr>
+                                        <td>${item.data}</td>
+                                        <td>${item.tipo}</td>
+                                        <td><span class="${item.cor}">${item.valor}</span></td>
+                                        <td><span class="${item.corSaldo}">${item.saldo}</span></td>
+                                        <td>
+                                            <div class="btn-group text-center" role="group">
+                                                <a title="Atualizar" href="${urlAtualizar}"><i class="fs-5 bi-pencil-square me-2"></i></a>
+                                                <button class="btn btn-link p-0 border-0 shadow-none btn-excluir" style="outline: none;" title="Excluir" data-url="${urlExcluir}" data-id="${item.id}"><i class="fs-5 bi-trash3"></i></button>
+                                            </div>
+                                        </td>
+                                    </tr>`;
+                            });
+                            htmlSubTabela += `
+                                        </tbody>
+                                    </table>
+                                </div>`;
+                            linha.child(htmlSubTabela).show();
+                            trMae.addClass('shown');
+                
+                        } else {
+                            Swal.fire("Não foi possível apagar!", "Este item está sendo utilizado em outras telas!");
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+}

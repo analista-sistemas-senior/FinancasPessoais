@@ -1,0 +1,147 @@
+﻿@model IEnumerable<FinancasPessoais.Web.ViewModels.ReceitaViewModel>
+@{
+    ViewData["Title"] = "Receitas";
+    decimal somaReceita = 0;
+}
+<link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css"/>
+<div class="p-3 p-md-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+        <h1 class="fs-3 text-secondary m-0"><i class="bi bi-currency-dollar"></i> @ViewData["Title"]</h1>
+        <div class="d-flex flex-row align-self-end align-self-md-center align-items-center">
+            <i class="bi bi-question-circle fs-4 me-3 mb-0 cursor-pointer" title="Ajuda" data-bs-toggle="modal" data-bs-target="#modalAjuda"></i>
+            <a class="btn btn-primary fw-bold shadow-sm" asp-action="Criacao"><i class="bi bi-file-earmark-plus me-2"></i>Novo</a>
+        </div>
+    </div>
+    <hr/>
+    <div class="table-responsive">
+        <table id="tabelaReceitas" class="table table-hover align-middle m-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.DTReceita)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase">@Html.DisplayNameFor(model => model.CarteiraViewModel)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase">@Html.DisplayNameFor(model => model.NMReceita)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.ReceitaFonteViewModel)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.ReceitaTipoViewModel)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase">@Html.DisplayNameFor(model => model.VLReceita)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var receita in Model)
+                {
+                    somaReceita += receita.VLReceita;
+                    <tr>
+                        <td data-order="@receita.DTReceita.ToString("yyyyMMddHHmmss")">@receita.DTReceita.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@receita.CarteiraViewModel!.NMCarteira</td>
+                        <td>@receita.NMReceita</td>
+                        <td>@receita.ReceitaFonteViewModel!.NMReceitaFonte</td>
+                        <td>@receita.ReceitaTipoViewModel!.NMReceitaTipo</td>
+                        <td><span class="verde fw-semibold">@receita.VLReceita.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span></td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a asp-action="Atualizacao" asp-route-id="@receita.IDReceitaCriptografada" title="Atualizar"><i class="fs-5 bi-pencil-square me-2"></i></a>
+                                <button class="btn btn-link p-0 border-0 shadow-none btn-excluir" style="outline: none;" title="Excluir" data-url="@Url.Action("Exclusao", "Receita")" data-id="@receita.IDReceitaCriptografada"><i class="fs-5 bi-trash3"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td><span class="verde fw-semibold">@somaReceita.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span></td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalAjuda" tabindex="-1" aria-labelledby="modalAjudaLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-opacity-10 bg-black border-bottom-0 py-3">
+                <h5 class="modal-title fw-bold d-flex align-items-center" id="modalAjudaLabel">
+                    <i class="bi bi-info-circle me-2"></i> Entendendo as receitas
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="text-secondary mb-3">
+                    As receitas registram todas as entradas de capital do seu fluxo de caixa.
+                    Lançar uma receita de forma detalhada é o passo mais importante para manter o controle do seu orçamento.
+                </p>
+                <h6 class="fw-bold text-dark small mb-3">Como preencher uma receita:</h6>
+                <ul class="list-unstyled text-secondary small ps-0 mb-3">
+                    <li class="mb-2">
+                        <strong>Tipo (categoria):</strong> identifica a natureza do ganho (ex: salário, anúncio, freelance) para agrupar os ganhos nos relatórios visuais.
+                    </li>
+                    <li class="mb-2">
+                        <strong>Fonte:</strong> identifica a origem ou estabelecimento que paga o dinheiro para você.
+                    </li>
+                    <li class="mb-0">
+                        <strong>Carteira:</strong> define de qual conta ou saldo o dinheiro está entrando para pagar esse ganho.
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-secondary btn-sm fw-bold px-3" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            new DataTable('#tabelaReceitas', {
+                language: { url: '/lib/datatables-plugins/i18n/pt-BR.json' },
+                pageLength: 50,
+                columnDefs: [
+                    { type: 'date-eu', targets: 0 }
+                ],
+                order: [[0, 'desc']]
+            });
+
+            $('#tabelaReceitas').on('click', '.btn-excluir', function () {
+                const urlDestino = $(this).data('url');
+                const idCriptografado = $(this).data('id');
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                Swal.fire({
+                    title: "Excluir item?",
+                    text: "Depois de excluído, não poderá ser recuperado!",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonColor: "#0d6efd",
+                    confirmButtonText: "Sim",
+                    cancelButtonText: "Não",
+                    showClass: { popup: 'swal2-fade-in' },
+                    hideClass: { popup: 'swal2-fade-out' }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: urlDestino,
+                            type: 'POST',
+                            headers: {
+                                'RequestVerificationToken': token 
+                            },
+                            data: { id: idCriptografado },
+                            success: function (resposta) {
+                                if (resposta.sucesso) {
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire("Não foi possível apagar!", "Este item está sendo utilizado em outras telas!");
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+}

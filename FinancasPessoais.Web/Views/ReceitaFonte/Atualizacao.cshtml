@@ -1,0 +1,26 @@
+﻿@model FinancasPessoais.Web.ViewModels.ReceitaFonteViewModel
+@{
+    ViewData["Title"] = "Atualizar fonte de receita";
+}
+<div class="p-3 p-md-5">
+    <form asp-action="Atualizacao" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IDReceitaFonteCriptografada"/>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+            <h1 class="fs-3 text-secondary m-0"><i class="bi bi-pencil-square"></i> @ViewData["Title"]</h1>
+            <div class="align-self-end align-self-md-center mt-2">
+                <button type="submit" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-floppy-fill me-2"></i>Atualizar</button>
+                <a class="btn btn-secondary fw-bold shadow-sm" asp-action="Index"><i class="bi bi-arrow-left-square me-2"></i>Voltar</a>
+            </div>
+        </div>
+        <hr/>
+        <div class="mb-3">
+            <label asp-for="NMReceitaFonte" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMReceitaFonte" class="form-control border-2 shadow-sm" placeholder="Insira nome da fonte de receita" required autofocus/>
+            <span asp-validation-for="NMReceitaFonte" class="text-danger small fw-semibold"></span>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

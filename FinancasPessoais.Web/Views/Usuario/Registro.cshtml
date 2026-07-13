@@ -1,0 +1,60 @@
+﻿@model FinancasPessoais.Web.ViewModels.UsuarioViewModel
+@{
+    Layout = "_LayoutSimples";
+    ViewData["Title"] = "Registro de novo usuário";
+}
+<div class="row justify-content-center align-items-center mt-5">
+    <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+        <div class="card shadow border-0 rounded-3">
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <div class="bg-primary bg-gradient text-white d-inline-block p-2 rounded-circle mb-3 shadow">
+                        <i class="bi bi-person-add fs-3 mx-2"></i>
+                    </div>
+                    <h4 class="fw-bold text-dark m-0">Novo usuário</h4>
+                </div>
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                        <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+                    </div>
+                }
+                <form asp-action="Registro" method="post" autocomplete="off">
+                    @Html.AntiForgeryToken()
+                    <div class="mb-3">
+                        <label asp-for="NMUsuario" class="form-label small fw-semibold text-secondary mb-1"></label>
+                        <input asp-for="NMUsuario" class="form-control border-2 shadow-sm" placeholder="Insira nome completo" required autofocus/>
+                        <span asp-validation-for="NMUsuario" class="text-danger small fw-semibold"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NMLogin" class="form-label small fw-semibold text-secondary mb-1"></label>
+                        <input asp-for="NMLogin" class="form-control border-2 shadow-sm" placeholder="Insira nome de usuário para login" required/>
+                        <span asp-validation-for="NMLogin" class="text-danger small fw-semibold"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CDSenha" class="form-label small fw-semibold text-secondary mb-1"></label>
+                        <input asp-for="CDSenha" class="form-control border-2 shadow-sm" placeholder="Insira senha" required/>
+                        <span asp-validation-for="CDSenha" class="text-danger small fw-semibold"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="ConfirmarSenha" class="form-label small fw-semibold text-secondary mb-1"></label>
+                        <input asp-for="ConfirmarSenha" class="form-control border-2 shadow-sm" placeholder="Repita a senha" required/>
+                        <span asp-validation-for="ConfirmarSenha" class="text-danger small fw-semibold"></span>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center mb-4">
+                        <label class="form-label small fw-semibold text-secondary">Já tem usuário? <a asp-action="Login" asp-controller="Autenticacao">Faça login aqui</a>.</label>
+                    </div>
+                    <div class="w-100 d-flex justify-content-center mb-2">
+                        <button type="submit" class="btn btn-primary fw-bold shadow-sm">Cadastrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <p class="text-muted small">&copy; @DateTime.Now.ToString("yyyy") - Finanças Pessoais</p>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

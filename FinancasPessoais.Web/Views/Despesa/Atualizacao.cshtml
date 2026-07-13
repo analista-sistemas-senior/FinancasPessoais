@@ -1,0 +1,62 @@
+﻿@model FinancasPessoais.Web.ViewModels.DespesaViewModel
+@{
+    ViewData["Title"] = "Atualizar despesa";
+}
+<div class="p-3 p-md-5">
+    <form asp-action="Atualizacao" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IDDespesaCriptografada"/>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+            <h1 class="fs-3 text-secondary m-0"><i class="bi bi-pencil-square"></i> @ViewData["Title"]</h1>
+            <div class="align-self-end align-self-md-center mt-2">
+                <button type="submit" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-floppy-fill me-2"></i>Atualizar</button>
+                <a class="btn btn-secondary fw-bold shadow-sm" asp-action="Index"><i class="bi bi-arrow-left-square me-2"></i>Voltar</a>
+            </div>
+        </div>
+        <hr/>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+            </div>
+        }
+        <div class="mb-3">
+            <label asp-for="NMDespesa" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMDespesa" class="form-control border-2 shadow-sm" placeholder="Insira nome da despesa" required autofocus/>
+            <span asp-validation-for="NMDespesa" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DTDespesa" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DTDespesa" type="datetime-local" class="form-control border-2 shadow-sm" placeholder="Insira a data e hora da despesa" required/>
+            <span asp-validation-for="DTDespesa" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDCarteira" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDCarteira" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Carteiras"]!)" required></select>
+            <span asp-validation-for="IDCarteira" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DSDespesa" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DSDespesa" class="form-control border-2 shadow-sm" placeholder="Insira descrição opcional da despesa"/>
+            <span asp-validation-for="DSDespesa" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDDespesaFonte" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDDespesaFonte" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Fontes"]!)" required></select>
+            <span asp-validation-for="IDDespesaFonte" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDDespesaTipo" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDDespesaTipo" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Tipos"]!)" required></select>
+            <span asp-validation-for="IDDespesaTipo" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="VLDespesa" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="VLDespesa" type="number" step="0.01" class="form-control border-2 shadow-sm" placeholder="Insira valor da despesa" required data-val-number="O campo deve ter um número válido" />
+            <span asp-validation-for="VLDespesa" class="text-danger small fw-semibold"></span>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

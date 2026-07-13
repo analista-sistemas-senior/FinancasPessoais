@@ -1,0 +1,173 @@
+﻿@{
+    string versao = "1.0.0";
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>@ViewData["Title"] - Finanças Pessoais</title>
+        <script type="importmap"></script>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+        <link rel="icon" type="image/png" href="~/img/logo32.png" asp-append-version="true"/>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-dark navbar-expand-md bg-primary bg-gradient shadow-sm p-2 border-bottom">
+                <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between p-0">
+                    <div class="d-flex flex-column a-left">
+                        <a class="navbar-brand fw-bold d-flex align-items-center gap-1 fs-3 m-0" asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-coin mx-2 fw-bold"></i>
+                            <div>
+                                <span>Finanças</span> <span class="text-white-50">Pessoais</span>
+                            </div>
+                        </a>
+                        <div class="d-block d-md-none mt-1 ps-2">
+                            <div class="d-flex flex-row align-items-center gap-3 text-white-50">
+                                <partial name="_LoginPartial" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="d-none d-md-block me-2">
+                            <partial name="_LoginPartial" />
+                        </div>
+                        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container-fluid min-vh-100 d-flex flex-column p-0">
+            <div class="row align-items-stretch g-0 flex-grow-1">
+                <nav id="sidebarMenu" class="col-lg-3 col-xl-2 d-lg-block collapse border-end p-0 pt-3 shadow-sm bg-white">
+                    <div class="d-flex flex-column h-100">
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider small" style="font-size: 0.7rem;">Relatórios</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Home" ? "active-custom shadow-sm" : "")" asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-clipboard-data"></i> Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "InvestimentoHistorico" ? "active-custom shadow-sm" : "")" asp-controller="InvestimentoHistorico" asp-action="Index">
+                                    <i class="bi bi-bar-chart-line-fill"></i> Histórico
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Investimentos</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Investimento" ? "active-custom shadow-sm" : "")" asp-controller="Investimento" asp-action="Index">
+                                    <i class="bi bi-graph-up-arrow"></i> Investimentos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                            <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "InvestimentoTipo" ? "active-custom shadow-sm" : "")" asp-controller="InvestimentoTipo" asp-action="Index">
+                                    <i class="bi bi-file-earmark-text"></i> Tipos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Emissor" ? "active-custom shadow-sm" : "")" asp-controller="Emissor" asp-action="Index">
+                                    <i class="bi bi-bank"></i> Emissores
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Receitas</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Receita" ? "active-custom shadow-sm" : "")" asp-controller="Receita" asp-action="Index">
+                                    <i class="bi bi-currency-dollar"></i> Receitas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "ReceitaTipo" ? "active-custom shadow-sm" : "")" asp-controller="ReceitaTipo" asp-action="Index">
+                                    <i class="bi bi-file-earmark-text"></i> Tipos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "ReceitaFonte" ? "active-custom shadow-sm" : "")" asp-controller="ReceitaFonte" asp-action="Index">
+                                    <i class="bi bi-cash-coin"></i> Fontes
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Despesas</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Despesa" ? "active-custom shadow-sm" : "")" asp-controller="Despesa" asp-action="Index">
+                                    <i class="bi bi-currency-dollar"></i> Despesas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "DespesaTipo" ? "active-custom shadow-sm" : "")" asp-controller="DespesaTipo" asp-action="Index">
+                                    <i class="bi bi-file-earmark-text"></i> Tipos
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "DespesaFonte" ? "active-custom shadow-sm" : "")" asp-controller="DespesaFonte" asp-action="Index">
+                                    <i class="bi bi-cash-coin"></i> Fontes
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Índices Financeiros</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Indexador" ? "active-custom shadow-sm" : "")" asp-controller="Indexador" asp-action="Index">
+                                    <i class="bi bi-percent"></i> Indexadores
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "IndiceFinanceiro" ? "active-custom shadow-sm" : "")" asp-controller="IndiceFinanceiro" asp-action="Index">
+                                    <i class="bi bi-graph-up-arrow"></i> Índices
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="px-3 mb-2">
+                            <small class="text-uppercase text-muted fw-bold tracking-wider" style="font-size: 0.7rem;">Outros</small>
+                        </div>
+                        <ul class="nav flex-column gap-0 mb-2">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Carteira" ? "active-custom shadow-sm" : "")" asp-controller="Carteira" asp-action="Index">
+                                    <i class="bi bi-wallet"></i> Carteiras
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-sidebar d-flex align-items-center gap-2 @(controller == "Usuario" ? "active-custom shadow-sm" : "")" asp-controller="Usuario" asp-action="Perfil">
+                                    <i class="bi bi-person"></i> Meu Perfil
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <main role="main" class="col-lg-9 ms-md-auto col-xl-10 px-lg-3 py-3 d-flex flex-column">
+                    <div class="bg-white rounded-3 shadow-sm border border-1">
+                        @RenderBody()
+                    </div>
+                    <footer class="text-center mt-5 text-muted small">
+                        <p class="text-muted">&copy; @DateTime.Now.ToString("yyyy") - Finanças Pessoais<br/>Versão @versao</p>
+                        <a class="text-muted" asp-controller="Home" asp-action="TermosPrivacidade">Termos de uso e privacidade</a>
+                    </footer>
+                </main>
+            </div>
+        </div>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

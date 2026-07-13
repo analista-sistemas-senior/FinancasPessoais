@@ -1,0 +1,142 @@
+﻿@model IEnumerable<FinancasPessoais.Web.ViewModels.InvestimentoTipoViewModel>
+@{
+    ViewData["Title"] = "Tipos de investimentos";
+}
+<link rel="stylesheet" href="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.css"/>
+<div class="p-3 p-md-5">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+        <h1 class="fs-3 text-secondary m-0"><i class="bi bi-file-earmark-text"></i> @ViewData["Title"]</h1>
+        <div class="d-flex flex-row align-self-end align-self-md-center align-items-center">
+            <i class="bi bi-question-circle fs-4 me-3 mb-0 cursor-pointer" title="Ajuda" data-bs-toggle="modal" data-bs-target="#modalAjuda"></i>
+            <a class="btn btn-primary fw-bold shadow-sm" asp-action="Criacao"><i class="bi bi-file-earmark-plus me-2"></i>Novo</a>
+        </div>
+    </div>
+    <hr/>
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    <div class="table-responsive">
+        <table id="tabelaInvestimentoTipos" class="table table-hover align-middle m-0">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.NMInvestimentoTipo)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.SGInvestimentoTipo)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.INTipoRentabilidade)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase ps-3">@Html.DisplayNameFor(model => model.IDIndexador)</th>
+                    <th scope="col" class="text-secondary small fw-bold text-uppercase text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var investimentoTipo in Model)
+                {
+                    <tr>
+                        <td>@investimentoTipo.NMInvestimentoTipo</td>
+                        <td>@investimentoTipo.SGInvestimentoTipo</td>
+                        <td>@Html.DisplayFor(model => investimentoTipo.INTipoRentabilidade)</td>
+                        <td>@(investimentoTipo.IndexadorViewModel == null ? "-" : investimentoTipo.IndexadorViewModel!.SGIndexador)</td>
+                        <td class="text-center">
+                            <div class="btn-group" role="group">
+                                <a asp-action="Atualizacao" asp-route-id="@investimentoTipo.IDInvestimentoTipoCriptografado" title="Atualizar"><i class="fs-5 bi-pencil-square me-2"></i></a>
+                                <button class="btn btn-link p-0 border-0 shadow-none btn-excluir" style="outline: none;" title="Excluir" data-url="@Url.Action("Exclusao", "InvestimentoTipo")" data-id="@investimentoTipo.IDInvestimentoTipoCriptografado"><i class="fs-5 bi-trash3"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="modalAjuda" tabindex="-1" aria-labelledby="modalAjudaLabel">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg border-0">
+            <div class="modal-header bg-opacity-10 bg-black border-bottom-0 py-3">
+                <h5 class="modal-title fw-bold d-flex align-items-center" id="modalAjudaLabel">
+                    <i class="bi bi-info-circle me-2"></i> Entendendo os tipos de investimentos
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="text-secondary mb-3">
+                    Os tipos de investimentos expressam a classificação da rentabilidade e a estrutura do ativo, definindo se a aplicação é pós-fixada, pré-fixada ou híbrida, além de identificar o indexador econômico atrelado a ela.
+                </p>
+                <h6 class="mb-2">Exemplos:</h6>
+                <ul class="text-secondary ps-0 ms-4 small">
+                    <li class="mb-2">
+                        Certificado de Depósito Bancário (CDB) Pré-fixado atrelado ao indexador CDI.
+                    </li>
+                    <li class="mb-2">
+                        Certificado de Depósito Bancário (CDB) Pós-fixado atrelado ao indexador CDI.
+                    </li>
+                    <li class="mb-2">
+                        Tesouro Direto Selic (TD-SELIC) Pós-fixado atrelado ao indexador SELIC.
+                    </li>
+                    <li class="mb-2">
+                        Tesouro Direto IPCA + 8% (TD-IPCA-8%) Híbrido cujo indexador é o IPCA (pós-fixado) acrescentado de 8% a.a. (pré-fixado).
+                    </li>
+                    <li class="mb-2">
+                        Ações, cripto etc: indexador não aplicável.
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer border-top-0 pt-0">
+                <button type="button" class="btn btn-secondary btn-sm fw-bold px-3" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.AntiForgeryToken()
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/datatables.net/dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs5/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            new DataTable('#tabelaInvestimentoTipos', {
+                language: { url: '/lib/datatables-plugins/i18n/pt-BR.json' },
+                pageLength: 50
+            });
+
+            $('#tabelaInvestimentoTipos').on('click', '.btn-excluir', function () {
+                const urlDestino = $(this).data('url');
+                const idCriptografado = $(this).data('id');
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+                Swal.fire({
+                    title: "Excluir item?",
+                    text: "Depois de excluído, não poderá ser recuperado!",
+                    showCancelButton: true,
+                    confirmButtonColor: "#dc3545",
+                    cancelButtonColor: "#0d6efd",
+                    confirmButtonText: "Sim",
+                    cancelButtonText: "Não",
+                    showClass: { popup: 'swal2-fade-in' },
+                    hideClass: { popup: 'swal2-fade-out' }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: urlDestino,
+                            type: 'POST',
+                            headers: {
+                                'RequestVerificationToken': token 
+                            },
+                            data: { id: idCriptografado },
+                            success: function (resposta) {
+                                if (resposta.sucesso) {
+                                    window.location.reload();
+                                } else {
+                                    Swal.fire("Não foi possível apagar!", "Este item está sendo utilizado em outras telas!");
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+}

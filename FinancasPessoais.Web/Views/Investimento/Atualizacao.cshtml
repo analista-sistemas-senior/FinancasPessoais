@@ -1,0 +1,88 @@
+﻿@using FinancasPessoais.Domain.Enums
+@model FinancasPessoais.Web.ViewModels.InvestimentoViewModel
+@{
+    ViewData["Title"] = "Atualizar investimento";
+}
+<div class="p-3 p-md-5">
+    <form asp-action="Atualizacao" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="IDInvestimentoCriptografado"/>
+        <input type="hidden" name="VLSaldo" asp-for="VLSaldo"/>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+            <h1 class="fs-3 text-secondary m-0"><i class="bi bi-pencil-square"></i> @ViewData["Title"]</h1>
+            <div class="align-self-end align-self-md-center mt-2">
+                <button type="submit" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-floppy-fill me-2"></i>Atualizar</button>
+                <a class="btn btn-secondary fw-bold shadow-sm" asp-action="Index"><i class="bi bi-arrow-left-square me-2"></i>Voltar</a>
+            </div>
+        </div>
+        <hr/>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+            </div>
+        }
+        <div class="mb-3">
+            <label asp-for="IDInvestimentoTipo" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDInvestimentoTipo" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["InvestimentosTipos"]!)" required></select>
+            <span asp-validation-for="IDInvestimentoTipo" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDEmissor" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDEmissor" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Emissores"]!)" required></select>
+            <span asp-validation-for="IDEmissor" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="NMInvestimento" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMInvestimento" class="form-control border-2 shadow-sm" placeholder="Insira nome do investimento" required autofocus/>
+            <span asp-validation-for="NMInvestimento" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="VLInvestimento" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="VLInvestimento" type="number" class="form-control border-2 shadow-sm" placeholder="Insira valor investido" required data-val-number="O campo deve ter um número válido"/>
+            <span asp-validation-for="VLInvestimento" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DTInvestimento" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DTInvestimento" type="datetime-local" class="form-control border-2 shadow-sm" placeholder="Insira data do investimento" required/>
+            <span asp-validation-for="DTInvestimento" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DTVencimento" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DTVencimento" class="form-control border-2 shadow-sm" placeholder="Insira data do vencimento se houver"/>
+            <span asp-validation-for="DTVencimento" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PCTaxaRentabilidade" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="PCTaxaRentabilidade" type="number" class="form-control border-2 shadow-sm" placeholder="Insira taxa de juros" data-val-number="O campo deve ter um número válido"/>
+            <span asp-validation-for="PCTaxaRentabilidade" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="INTaxaPeriodicidade" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="INTaxaPeriodicidade" class="form-select border-2 shadow-sm" asp-items="Html.GetEnumSelectList<TaxaPeriodicidade>()"></select>
+            <span asp-validation-for="INTaxaPeriodicidade" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="TXAnotacao" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="TXAnotacao" class="form-control border-2 shadow-sm" placeholder="Insira anotação opcional"/>
+            <span asp-validation-for="TXAnotacao" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="FLLiquidado" class="form-label fw-semibold text-secondary mb-2"></label>
+            <div class="gap-4 py-2">
+                <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input border-2 cursor-pointer" type="radio" asp-for="FLLiquidado" value="false" id="statusAtivo" checked />
+                    <label class="form-check-label fw-semibold cursor-pointer" for="statusAtivo">Não</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                    <input class="form-check-input border-2 cursor-pointer" type="radio" asp-for="FLLiquidado" value="true" id="statusLiquidado" />
+                    <label class="form-check-label fw-semibold cursor-pointer" for="statusLiquidado">Sim</label>
+                </div>
+            </div>
+            <span asp-validation-for="FLLiquidado" class="text-danger small fw-semibold"></span>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

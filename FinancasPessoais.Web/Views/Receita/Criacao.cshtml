@@ -1,0 +1,61 @@
+﻿@model FinancasPessoais.Web.ViewModels.ReceitaViewModel
+@{
+    ViewData["Title"] = "Criar nova receita";
+}
+<div class="p-3 p-md-5">
+    <form asp-action="Criacao" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-3 gap-2">
+            <h1 class="fs-3 text-secondary m-0"><i class="bi bi-file-earmark-plus"></i> @ViewData["Title"]</h1>
+            <div class="align-self-end align-self-md-center mt-2">
+                <button type="submit" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-floppy-fill me-2"></i>Criar</button>
+                <a class="btn btn-secondary fw-bold shadow-sm" asp-action="Index"><i class="bi bi-arrow-left-square me-2"></i>Voltar</a>
+            </div>
+        </div>
+        <hr/>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+            </div>
+        }
+        <div class="mb-3">
+            <label asp-for="NMReceita" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMReceita" class="form-control border-2 shadow-sm" placeholder="Insira nome da receita" required autofocus/>
+            <span asp-validation-for="NMReceita" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DTReceita" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DTReceita" type="datetime-local" class="form-control border-2 shadow-sm" placeholder="Insira a data e hora da receita" required/>
+            <span asp-validation-for="DTReceita" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDCarteira" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDCarteira" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Carteiras"]!)" required></select>
+            <span asp-validation-for="IDCarteira" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DSReceita" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="DSReceita" class="form-control border-2 shadow-sm" placeholder="Insira descrição opcional da receita"/>
+            <span asp-validation-for="DSReceita" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDReceitaFonte" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDReceitaFonte" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Fontes"]!)" required></select>
+            <span asp-validation-for="IDReceitaFonte" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="IDReceitaTipo" class="form-label fw-semibold text-secondary mb-1"></label>
+            <select asp-for="IDReceitaTipo" class="form-select border-2 shadow-sm" asp-items="@((SelectList) ViewData["Tipos"]!)" required></select>
+            <span asp-validation-for="IDReceitaTipo" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="VLReceita" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="VLReceita" type="number" step="0.01" class="form-control border-2 shadow-sm" placeholder="Insira valor da receita" required data-val-number="O campo deve ter um número válido"/>
+            <span asp-validation-for="VLReceita" class="text-danger small fw-semibold"></span>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

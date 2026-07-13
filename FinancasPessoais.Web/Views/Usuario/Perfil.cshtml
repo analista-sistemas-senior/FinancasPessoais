@@ -1,0 +1,46 @@
+﻿@model FinancasPessoais.Web.ViewModels.UsuarioViewModel
+@{
+    ViewData["Title"] = "Meu perfil";
+}
+<div class="p-3 p-md-5">
+    <form asp-action="Perfil" method="post" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="fs-3 text-secondary m-0"><i class="bi bi-file-earmark-plus"></i> @ViewData["Title"]</h1>
+            <div>
+                <button type="submit" class="btn btn-primary fw-bold shadow-sm"><i class="bi bi-floppy-fill me-2"></i>Editar</button>
+                <a class="btn btn-secondary fw-bold shadow-sm" asp-action="Index" asp-controller="Home"><i class="bi bi-arrow-left-square me-2"></i>Voltar</a>
+            </div>
+        </div>
+        <hr/>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger py-2 shadow-sm rounded-3" role="alert">
+                <div asp-validation-summary="ModelOnly" class="small text-danger fw-semibold m-0"></div>
+            </div>
+        }
+        <div class="mb-3">
+            <label asp-for="NMUsuario" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMUsuario" class="form-control border-2 shadow-sm" placeholder="Insira nome completo" required autofocus/>
+            <span asp-validation-for="NMUsuario" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="NMLogin" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="NMLogin" class="form-control border-2 shadow-sm" placeholder="Insira nome de usuário para login" required readonly/>
+            <span asp-validation-for="NMLogin" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CDSenha" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="CDSenha" class="form-control border-2 shadow-sm" placeholder="Insira senha" required/>
+            <span asp-validation-for="CDSenha" class="text-danger small fw-semibold"></span>
+        </div>
+        <div class="mb-5">
+            <label asp-for="ConfirmarSenha" class="form-label fw-semibold text-secondary mb-1"></label>
+            <input asp-for="ConfirmarSenha" class="form-control border-2 shadow-sm" placeholder="Repita a senha" required/>
+            <span asp-validation-for="ConfirmarSenha" class="text-danger small fw-semibold"></span>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/>
+}

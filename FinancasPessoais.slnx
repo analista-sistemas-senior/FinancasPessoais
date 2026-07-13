@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FinancasPessoais.Domain/FinancasPessoais.Domain.csproj" Id="557a8740-8974-4461-9d81-bb4a9724cf48" />
+  <Project Path="FinancasPessoais.Infra.Data/FinancasPessoais.Infra.Data.csproj" Id="619b7531-df58-4f6e-bb49-4bc0dad4cc71" />
+  <Project Path="FinancasPessoais.Service/FinancasPessoais.Service.csproj" Id="4dadb7f3-ab22-4161-abbc-c54243ceb3e3" />
+  <Project Path="FinancasPessoais.Web/FinancasPessoais.Web.csproj" />
+</Solution>
