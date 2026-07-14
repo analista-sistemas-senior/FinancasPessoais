@@ -11,10 +11,10 @@
         public virtual ICollection<Despesa> Despesas { get; private set; } = [];
 
         public Carteira() {}
-        public Carteira(int idCarteira, int idUuario, string nmCarteira)
+        public Carteira(int idCarteira, int idUsuario, string nmCarteira)
         {
             IDCarteira = idCarteira;
-            IDUsuario = idUuario;
+            IDUsuario = idUsuario;
             NMCarteira = nmCarteira;
         }
     }

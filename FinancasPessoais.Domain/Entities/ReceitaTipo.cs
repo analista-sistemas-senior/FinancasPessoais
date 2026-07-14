@@ -10,10 +10,10 @@
         public virtual ICollection<Receita> Receitas { get; private set; } = [];
 
         public ReceitaTipo() {}
-        public ReceitaTipo(int idReceitaTipo, int idUuario, string nmReceitaTipo)
+        public ReceitaTipo(int idReceitaTipo, int idUsuario, string nmReceitaTipo)
         {
             IDReceitaTipo = idReceitaTipo;
-            IDUsuario = idUuario;
+            IDUsuario = idUsuario;
             NMReceitaTipo = nmReceitaTipo;
         }
     }
