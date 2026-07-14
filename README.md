@@ -78,7 +78,7 @@ Certifique-se de ter o Docker e o .NET 10 SDK instalados em sua máquina local.
 3 - Na raiz da solução (onde está o arquivo docker-compose-postgre.yml), execute o comando:
 
 ``` shell
-docker composse -f docker-compose-postgre.yml up -d
+docker compose -f docker-compose-postgre.yml up -d
 ```
 
 4 - Certifique-se de que o arquivo appsettings.json do Projeto.Web aponta para o endereço do banco local (localhost:5432) com as credenciais configuradas no container.
