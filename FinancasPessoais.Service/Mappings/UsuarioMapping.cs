@@ -15,7 +15,7 @@ public static class UsuarioMapping
         return [.. usuarios.Select(u => u.ParaDTO()).ToList()];
     }
 
-    public static Usuario PraEntidade(this UsuarioDTO usuarioDTO)
+    public static Usuario ParaEntidade(this UsuarioDTO usuarioDTO)
     {
         return new Usuario(usuarioDTO.IDUsuario, usuarioDTO.NMUsuario, usuarioDTO.NMLogin, usuarioDTO.CDSenha);
     }

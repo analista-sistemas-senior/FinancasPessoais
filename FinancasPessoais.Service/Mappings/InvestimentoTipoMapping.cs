@@ -15,7 +15,7 @@ public static class InvestimentoTipoMapping
         return [.. investimentosTipos.Select(it => it.ParaDTO()).ToList()];
     }
 
-    public static InvestimentoTipo PraEntidade(this InvestimentoTipoDTO investimentoTipoDTO)
+    public static InvestimentoTipo ParaEntidade(this InvestimentoTipoDTO investimentoTipoDTO)
     {
         return new InvestimentoTipo(investimentoTipoDTO.IDInvestimentoTipo, investimentoTipoDTO.IDIndexador, investimentoTipoDTO.IDUsuario, investimentoTipoDTO.NMInvestimentoTipo, investimentoTipoDTO.SGInvestimentoTipo, investimentoTipoDTO.INTipoRentabilidade);    
     }

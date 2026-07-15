@@ -1,6 +1,4 @@
-﻿using FinancasPessoais.Domain.Entities;
-using FinancasPessoais.Domain.Interfaces;
-using FinancasPessoais.Infra.Data.Repositories;
+﻿using FinancasPessoais.Domain.Interfaces;
 using FinancasPessoais.Service.Common;
 using FinancasPessoais.Service.DTOs;
 using FinancasPessoais.Service.Interfaces;
@@ -33,7 +31,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<DespesaFonteDTO>> CadastrarDespesaFonte(DespesaFonteDTO despesaFonte)
         {
-            var despesaFonteNova = await _despesaFonteRepository.CadastrarDespesaFonte(despesaFonte.PraEntidade());
+            var despesaFonteNova = await _despesaFonteRepository.CadastrarDespesaFonte(despesaFonte.ParaEntidade());
             return Resultado<DespesaFonteDTO>.Ok(despesaFonteNova.ParaDTO());
         }
 
@@ -41,7 +39,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var despesaFonteAtualizada = await _despesaFonteRepository.AtualizarDespesaFonte(despesaFonte.PraEntidade());
+                var despesaFonteAtualizada = await _despesaFonteRepository.AtualizarDespesaFonte(despesaFonte.ParaEntidade());
                 return Resultado<DespesaFonteDTO>.Ok(despesaFonteAtualizada.ParaDTO());
             }
             catch (DbUpdateConcurrencyException) { return Resultado<DespesaFonteDTO>.Falha("Falhou"); }

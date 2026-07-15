@@ -31,7 +31,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<IndexadorDTO>> CadastrarIndexador(IndexadorDTO indexador)
         {
-            var indexadorNova = await _indexadorRepository.CadastrarIndexador(indexador.PraEntidade());
+            var indexadorNova = await _indexadorRepository.CadastrarIndexador(indexador.ParaEntidade());
             return Resultado<IndexadorDTO>.Ok(indexadorNova.ParaDTO());
         }
 
@@ -39,7 +39,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var indexadorAtualizada = await _indexadorRepository.AtualizarIndexador(indexador.PraEntidade());
+                var indexadorAtualizada = await _indexadorRepository.AtualizarIndexador(indexador.ParaEntidade());
                 return Resultado<IndexadorDTO>.Ok(indexadorAtualizada.ParaDTO());
             }
             catch (DbUpdateConcurrencyException) { return Resultado<IndexadorDTO>.Falha("Falhou"); }

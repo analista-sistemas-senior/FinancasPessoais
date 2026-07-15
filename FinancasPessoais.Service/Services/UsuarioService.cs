@@ -31,7 +31,7 @@ namespace FinancasPessoais.Service.Services
             var usuarioExistente = await _usuarioRepository.RetornarUsuarioPorLogin(usuario.NMLogin);
             if (usuarioExistente != null) return Resultado<UsuarioDTO>.Falha("Nome de login já existente");
 
-            var usuarioNovo = usuario.PraEntidade();
+            var usuarioNovo = usuario.ParaEntidade();
             string senhaCriptografada = _passwordHasher.HashPassword(usuarioNovo, usuarioNovo.CDSenha);
             usuarioNovo.DefinirSenhaCriptografada(senhaCriptografada);
 
@@ -44,7 +44,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var usuarioAtualizado = usuario.PraEntidade();
+                var usuarioAtualizado = usuario.ParaEntidade();
                 usuarioAtualizado.DefinirSenhaCriptografada(_passwordHasher.HashPassword(usuarioAtualizado, usuarioAtualizado.CDSenha));
 
                 await _usuarioRepository.AtualizarUsuario(usuarioAtualizado);

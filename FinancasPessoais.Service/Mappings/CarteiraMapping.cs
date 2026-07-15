@@ -15,7 +15,7 @@ public static class CarteiraMapping
         return [.. carteiras.Select(c => c.ParaDTO()).ToList()];
     }
 
-    public static Carteira PraEntidade(this CarteiraDTO carteiraDTO)
+    public static Carteira ParaEntidade(this CarteiraDTO carteiraDTO)
     {
         return new Carteira(carteiraDTO.IDCarteira, carteiraDTO.IDUsuario, carteiraDTO.NMCarteira);
     }

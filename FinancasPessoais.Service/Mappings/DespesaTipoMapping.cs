@@ -15,7 +15,7 @@ public static class DespesaTipoMapping
         return [.. despesasTipos.Select(dt => dt.ParaDTO()).ToList()];
     }
 
-    public static DespesaTipo PraEntidade(this DespesaTipoDTO despesaTipoDTO)
+    public static DespesaTipo ParaEntidade(this DespesaTipoDTO despesaTipoDTO)
     {
         return new DespesaTipo(despesaTipoDTO.IDDespesaTipo, despesaTipoDTO.IDUsuario, despesaTipoDTO.NMDespesaTipo);
     }

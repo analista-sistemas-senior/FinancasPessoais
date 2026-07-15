@@ -15,7 +15,7 @@ public static class IndexadorMapping
         return [.. indexadores.Select(inx => inx.ParaDTO()).ToList()];
     }
 
-    public static Indexador PraEntidade(this IndexadorDTO indexadorDTO)
+    public static Indexador ParaEntidade(this IndexadorDTO indexadorDTO)
     {
         return new Indexador(indexadorDTO.IDIndexador, indexadorDTO.IDIndiceFinanceiro, indexadorDTO.IDUsuario, indexadorDTO.NMIndexador, indexadorDTO.SGIndexador, indexadorDTO.PCIndiceFinanceiro);
     }

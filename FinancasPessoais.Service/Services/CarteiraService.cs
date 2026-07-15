@@ -31,14 +31,14 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<CarteiraDTO>> CadastrarCarteira(CarteiraDTO carteira)
         {
-            var carteiraNova = await _carteiraRepository.CadastrarCarteira(carteira.PraEntidade());
+            var carteiraNova = await _carteiraRepository.CadastrarCarteira(carteira.ParaEntidade());
             return Resultado<CarteiraDTO>.Ok(carteiraNova.ParaDTO());
         }
 
         public async Task<Resultado<CarteiraDTO>> AtualizarCarteira(CarteiraDTO carteira)
         {
             try {
-                var carteiraAtualizada = await _carteiraRepository.AtualizarCarteira(carteira.PraEntidade());
+                var carteiraAtualizada = await _carteiraRepository.AtualizarCarteira(carteira.ParaEntidade());
                 return Resultado<CarteiraDTO>.Ok(carteiraAtualizada.ParaDTO());
             }  catch (DbUpdateConcurrencyException) { return Resultado<CarteiraDTO>.Falha("Falhou"); }
         }

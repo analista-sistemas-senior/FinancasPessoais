@@ -15,7 +15,7 @@ public static class EmissorMapping
         return [.. emissores.Select(e => e.ParaDTO()).ToList()];
     }
 
-    public static Emissor PraEntidade(this EmissorDTO emissorDTO)
+    public static Emissor ParaEntidade(this EmissorDTO emissorDTO)
     {
         return new Emissor(emissorDTO.IDEmissor, emissorDTO.IDUsuario, emissorDTO.NMEmissor);
     }

@@ -15,7 +15,7 @@ public static class ReceitaMapping
         return [.. receitas.Select(r => r.ParaDTO()).ToList()];
     }
 
-    public static Receita PraEntidade(this ReceitaDTO receitaDTO)
+    public static Receita ParaEntidade(this ReceitaDTO receitaDTO)
     {
         return new Receita(receitaDTO.IDReceita, receitaDTO.IDCarteira, receitaDTO.IDReceitaTipo, receitaDTO.IDReceitaFonte, receitaDTO.IDUsuario, receitaDTO.NMReceita, receitaDTO.DSReceita, receitaDTO.DTReceita, receitaDTO.VLReceita);
     }

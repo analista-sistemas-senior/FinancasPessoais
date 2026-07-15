@@ -15,7 +15,7 @@ public static class DespesaFonteMapping
         return [.. despesasFontes.Select(df => df.ParaDTO()).ToList()];
     }
 
-    public static DespesaFonte PraEntidade(this DespesaFonteDTO despesaFonteDTO)
+    public static DespesaFonte ParaEntidade(this DespesaFonteDTO despesaFonteDTO)
     {
         return new DespesaFonte(despesaFonteDTO.IDDespesaFonte, despesaFonteDTO.IDUsuario, despesaFonteDTO.NMDespesaFonte);
     }

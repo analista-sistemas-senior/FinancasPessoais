@@ -32,7 +32,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<InvestimentoHistoricoDTO>> CadastrarInvestimentoHistorico(InvestimentoHistoricoDTO investimentoHistorico)
         {
-            var investimentoHistoricoNovo = await _investimentoHistoricoRepository.CadastrarInvestimentoHistorico(investimentoHistorico.PraEntidade());
+            var investimentoHistoricoNovo = await _investimentoHistoricoRepository.CadastrarInvestimentoHistorico(investimentoHistorico.ParaEntidade());
             
             await AtualizarInvestimentoSaldo(investimentoHistoricoNovo.IDInvestimento);
 
@@ -43,7 +43,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var investimentoHistoricoAtualizado = await _investimentoHistoricoRepository.AtualizarInvestimentoHistorico(investimentoHistorico.PraEntidade());
+                var investimentoHistoricoAtualizado = await _investimentoHistoricoRepository.AtualizarInvestimentoHistorico(investimentoHistorico.ParaEntidade());
 
                 await AtualizarInvestimentoSaldo(investimentoHistorico.IDInvestimento);
 

@@ -31,7 +31,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<InvestimentoTipoDTO>> CadastrarInvestimentoTipo(InvestimentoTipoDTO investimentoTipo)
         {
-            var investimentoTipoNova = await _investimentoTipoRepository.CadastrarInvestimentoTipo(investimentoTipo.PraEntidade());
+            var investimentoTipoNova = await _investimentoTipoRepository.CadastrarInvestimentoTipo(investimentoTipo.ParaEntidade());
             return Resultado<InvestimentoTipoDTO>.Ok(investimentoTipoNova.ParaDTO());
         }
 
@@ -39,7 +39,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var investimentoTipoAtualizada = await _investimentoTipoRepository.AtualizarInvestimentoTipo(investimentoTipo.PraEntidade());
+                var investimentoTipoAtualizada = await _investimentoTipoRepository.AtualizarInvestimentoTipo(investimentoTipo.ParaEntidade());
                 return Resultado<InvestimentoTipoDTO>.Ok(investimentoTipoAtualizada.ParaDTO());
             }
             catch (DbUpdateConcurrencyException) { return Resultado<InvestimentoTipoDTO>.Falha("Falhou"); }

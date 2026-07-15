@@ -15,7 +15,7 @@ public static class IndiceFinanceiroMapping
         return [.. indicesFinanceiros.Select(inf => inf.ParaDTO()).ToList()];
     }
 
-    public static IndiceFinanceiro PraEntidade(this IndiceFinanceiroDTO indiceFinanceiroDTO)
+    public static IndiceFinanceiro ParaEntidade(this IndiceFinanceiroDTO indiceFinanceiroDTO)
     {
         return new IndiceFinanceiro(indiceFinanceiroDTO.IDIndiceFinanceiro, indiceFinanceiroDTO.IDUsuario, indiceFinanceiroDTO.NMIndiceFinanceiro, indiceFinanceiroDTO.VLIndiceFinanceiro, indiceFinanceiroDTO.INTaxaPeriodicidade);
     }

@@ -15,7 +15,7 @@ public static class InvestimentoHistoricoMapping
         return [.. investimentosHistoricos.Select(ih => ih.ParaDTO()).ToList()];
     }
 
-    public static InvestimentoHistorico PraEntidade(this InvestimentoHistoricoDTO investimentoHistoricoDTO)
+    public static InvestimentoHistorico ParaEntidade(this InvestimentoHistoricoDTO investimentoHistoricoDTO)
     {
         return new InvestimentoHistorico(investimentoHistoricoDTO.IDInvestimentoHistorico, investimentoHistoricoDTO.IDInvestimento, investimentoHistoricoDTO.DTInvestimentoHistorico, investimentoHistoricoDTO.VLInvestimentoHistorico, investimentoHistoricoDTO.INInvestimentoHistorico);
     }

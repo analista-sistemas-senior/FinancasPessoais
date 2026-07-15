@@ -31,7 +31,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<ReceitaDTO>> CadastrarReceita(ReceitaDTO receita)
         {
-            var receitaNova = await _receitaRepository.CadastrarReceita(receita.PraEntidade());
+            var receitaNova = await _receitaRepository.CadastrarReceita(receita.ParaEntidade());
             return Resultado<ReceitaDTO>.Ok(receitaNova.ParaDTO());
         }
 
@@ -39,7 +39,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var receitaAtualizada = await _receitaRepository.AtualizarReceita(receita.PraEntidade());
+                var receitaAtualizada = await _receitaRepository.AtualizarReceita(receita.ParaEntidade());
                 return Resultado<ReceitaDTO>.Ok(receitaAtualizada.ParaDTO());
             }
             catch (DbUpdateConcurrencyException) { return Resultado<ReceitaDTO>.Falha("Falhou"); }

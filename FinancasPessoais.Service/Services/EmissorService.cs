@@ -31,7 +31,7 @@ namespace FinancasPessoais.Service.Services
 
         public async Task<Resultado<EmissorDTO>> CadastrarEmissor(EmissorDTO emissor)
         {
-            var emissorNova = await _emissorRepository.CadastrarEmissor(emissor.PraEntidade());
+            var emissorNova = await _emissorRepository.CadastrarEmissor(emissor.ParaEntidade());
             return Resultado<EmissorDTO>.Ok(emissorNova.ParaDTO());
         }
 
@@ -39,7 +39,7 @@ namespace FinancasPessoais.Service.Services
         {
             try
             {
-                var emissorAtualizada = await _emissorRepository.AtualizarEmissor(emissor.PraEntidade());
+                var emissorAtualizada = await _emissorRepository.AtualizarEmissor(emissor.ParaEntidade());
                 return Resultado<EmissorDTO>.Ok(emissorAtualizada.ParaDTO());
             }
             catch (DbUpdateConcurrencyException) { return Resultado<EmissorDTO>.Falha("Falhou"); }
