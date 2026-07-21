@@ -77,7 +77,16 @@ namespace FinancasPessoais.Service.Services
         public async Task AtualizarInvestimentoSaldo(int idInvestimento)
         {
             var investimentoHistorico = await _investimentoHistoricoRepository.RetornarInvestimentosHistoricosPorIdInvestimento(idInvestimento);
-            if (investimentoHistorico == null) return;
+            if (investimentoHistorico == null) 
+            {
+                var investimentoAtualizacao = await _investimentoRepository.RetornarInvestimentoPorId(idInvestimento);
+                if (investimentoAtualizacao == null) return;
+
+                investimentoAtualizacao.AtualizarSaldo(investimentoAtualizacao.VLInvestimento);
+                await _investimentoRepository.AtualizarInvestimento(investimentoAtualizacao);
+
+                return;
+            }
 
             var primeiroHistorico = investimentoHistorico.FirstOrDefault();
             if (primeiroHistorico == null) return;
