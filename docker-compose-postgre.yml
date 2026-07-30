@@ -1,16 +1,22 @@
 services:
-  postgres-db-financas-pessoais:
+  postgres_db_financas_pessoais:
     image: postgres:16-alpine
-    container_name: FinancasPessoaisPostgre
+    container_name: financas_pessoais_postgre
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
+    networks:
+      - financas_pessoais_network
     volumes:
       - financas_pessoais_postgres_data:/var/lib/postgresql/data
     restart: always
+
+networks:
+  financas_pessoais_network:
+    name: financas_pessoais_network
 
 volumes:
   financas_pessoais_postgres_data:
