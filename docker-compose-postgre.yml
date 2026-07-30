@@ -1,5 +1,5 @@
 services:
-  postgres-db:
+  postgres-db-financas-pessoais:
     image: postgres:16-alpine
     container_name: FinancasPessoaisPostgre
     environment:
@@ -9,8 +9,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - financas_pessoais_postgres_data:/var/lib/postgresql/data
     restart: always
 
 volumes:
-  postgres_data:
+  financas_pessoais_postgres_data:
+    name: financas_pessoais_postgres_data
