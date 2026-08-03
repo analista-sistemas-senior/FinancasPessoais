@@ -2,7 +2,7 @@
 
 ## Sistema de registro e acompanhamento de investimentos e fluxo de caixa
 
-Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para controle patrimonial, registro da evolução de investimentos com painéis visuais interativos, desenvolvido com o objetivo de demonstrar competências técnicas em padrões de engenharia e arquitetura de software do ecossistema .NET 10 e ser um **projeto estritamente acadêmico e de portfólio**.
+Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para controle patrimonial, registro da evolução de investimentos com painéis visuais interativos, desenvolvido com o objetivo de demonstrar competências técnicas em padrões de engenharia e arquitetura de software do ecossistema .NET 10 e ser um **projeto estritamente acadêmico e de portfólio técnico**.
 
 <p>
     <img src="Imagens/img1.png" alt="Dashboard de Finanças Pessoais" width="48%">
@@ -17,7 +17,9 @@ Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para
 
 - Segurança defensiva (antimanipulação): criptografia de chaves primárias nas URLs utilizando a biblioteca de `DataProtection` do .NET para impedir ID-Tampering (ataques de alteração de parâmetros).
 
-- Arquitetura desacoplada: implementação baseada em Clean Architecture e Repository Pattern, garantindo isolamento total da camada de negócio em relação ao ORM (Entity Framework Core).
+- Arquitetura desacoplada: implementação baseada em Clean Architecture, Domain-Driven Design (DDD) e Repository Pattern, garantindo isolamento total da camada de negócio em relação ao ORM (Entity Framework Core).
+
+- Multi-usuário: sistema projetado para suporte a múltiplos usuários, garantindo o isolamento total de dados e recursos por conta.
 
 ## Arquitetura
 
@@ -29,11 +31,11 @@ O projeto foi estruturado seguindo os princípios do DDD (Domain-Driven Design) 
 
 - FinancasPessoais.Service (regras de negócio): contém os serviços de aplicação que orquestram os fluxos de dados, validações internas e lógica de cálculos utilizados na aplicação.
 
-- FinancasPessoais.Web (apresentação): interface do usuário desenvolvida em ASP.NET Core MVC (Razor Views), contendo as Controllers, ViewModels, injeção de dependência e integração com bibliotecas e scripts de front-end.
+- FinancasPessoais.Web (apresentação): interface do usuário desenvolvida em ASP.NET Core MVC (Razor Views), contendo as Controllers, ViewModels, injeção de dependência e integração com bibliotecas e scripts de frontend.
 
 ### Modelagem do Banco de Dados (MER)
 
-Abaixo está a estrutura relacional mapeada para suportar as regras de negócio de investimentos, fluxos de caixa e agrupamentos temporais:
+Abaixo está a estrutura relacional mapeada para suportar as regras de negócio de investimentos, fluxos de caixa e agrupamentos temporais. Foi adotado o padrão de nomenclatura de banco de dados do **DoD (Department of Defense)** para garantir consistência, legibilidade e padronização estrita nas tabelas e atributos.
 
 <p>
     <img src="Imagens/img3.jpg" alt="Diagrama de Entidade Relacionamento" width="70%">
@@ -41,15 +43,15 @@ Abaixo está a estrutura relacional mapeada para suportar as regras de negócio 
 
 ## Stack Tecnológica e Infraestrutura
 
-- Banco de dados: PostgreSQL (Docker). Banco relacional robusto rodando em container isolado.
+- Banco de dados: PostgreSQL (executado via Docker). Banco relacional robusto rodando em container isolado.
 
 - Backend: .NET 10 / C\# Framework de altíssima performance para a API e servidor.
 
-- Persistência / ORM: Entity Framework Core. Mapeamento objeto-relacional com consultas otimizadas.
+- Persistência / ORM: Entity Framework Core. Mapeamento objeto-relacional (ORM) com suporte a Migrations e consultas LINQ otimizadas.
 
 - Segurança: ASP.NET Core Data Protection. Criptografia em memória para blindagem de parâmetros de URL.
 
-- Frontend: Bootstrap 5, Flexbox, JS (ES6), JQuery, interfaces responsivas, limpa e com alinhamentos fluidos.
+- Frontend: Bootstrap 5, Flexbox, JS (ES6), jQuery, interfaces responsivas, limpa e com alinhamentos fluidos.
 
 - Gráficos: Apache Echarts. Renderização em português de gráficos de barras e setores.
 
@@ -59,7 +61,7 @@ Abaixo está a estrutura relacional mapeada para suportar as regras de negócio 
 
 - Tratamento de exceções relacionais: em conformidade com o princípio de Responsabilidade Única (SRP), a camada de serviço não conhece o EF Core. O tratamento de violações de integridade de chaves estrangeiras (ex: tentar apagar uma carteira com investimentos vinculados) é capturado via DbUpdateException diretamente dentro da Infra.Data, devolvendo um fluxo limpo de falha sem onerar a memória com Stack Traces globais.
 
-- Validação defensiva: uso rigoroso de string.IsNullOrWhiteSpace() na entrada de dados críticos, garantindo falha rápida (Fail-Fast) contra strings vazias ou nulas geradas no front-end, além de validação dos parâmetros blindando o sistema de ataques ID-Tampering.
+- Validação defensiva: uso rigoroso de string.IsNullOrWhiteSpace() na entrada de dados críticos, garantindo falha rápida (Fail-Fast) contra strings vazias ou nulas geradas no frontend, além de validação dos parâmetros blindando o sistema de ataques ID-Tampering.
 
 - Agrupamentos temporais otimizados: lógica avançada utilizando LINQ em memória para mapear e consolidar saldos retroativos mês a mês de forma encadeada, garantindo a montagem perfeita sem gerar múltiplas consultas desnecessárias ao banco de dados.  
 
@@ -77,17 +79,17 @@ Certifique-se de ter o Docker e o .NET 10 SDK instalados em sua máquina local.
 
 3 - Na raiz da solução (onde está o arquivo docker-compose-postgre.yml), execute o comando:
 
-``` shell
+```bash
 docker compose -f docker-compose-postgre.yml up -d
 ```
 
-4 - Certifique-se de que o arquivo appsettings.json do Projeto.Web aponta para o endereço do banco local (localhost:5432) com as credenciais configuradas no container.
+4 - Certifique-se de que o arquivo appsettings.json do FinancasPessoais.Web aponta para o endereço do banco local (localhost:5432) com as credenciais configuradas no container.
 
 5 - Rodar as Migrations e iniciar a aplicação
 
 Navegue até a pasta raiz da solução e execute o comando:
 
-``` shell
+```bash
 dotnet restore
 dotnet build
 dotnet ef database update --project FinancasPessoais.Infra.Data --startup-project FinancasPessoais.Web
