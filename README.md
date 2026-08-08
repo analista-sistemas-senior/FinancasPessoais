@@ -90,14 +90,9 @@ docker compose -f docker-compose-postgre.yml up -d
 Navegue até a pasta raiz da solução e execute o comando:
 
 ```bash
-# 1. Restaura dependências e compila
 dotnet restore
 dotnet build
-
-# 2. Executa a Migration para montar o banco PostgreSQL no Docker
 dotnet ef database update --project FinancasPessoais.Infra.Data --startup-project FinancasPessoais.Web
-
-# 3. Inicia a aplicação Web
 dotnet run --project FinancasPessoais.Web
 ```
 
