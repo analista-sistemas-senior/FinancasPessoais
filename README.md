@@ -2,7 +2,7 @@
 
 ## Sistema de registro e acompanhamento de investimentos e fluxo de caixa
 
-Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para controle patrimonial, registro da evolução de investimentos com painéis visuais interativos, desenvolvido com o objetivo de demonstrar competências técnicas em padrões de engenharia e arquitetura de software do ecossistema .NET 10 e ser um **projeto estritamente acadêmico e de portfólio técnico**.
+Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para controle patrimonial, registro da evolução de investimentos com painéis visuais interativos, desenvolvido com o objetivo de demonstrar competências técnicas em padrões de engenharia e arquitetura de software do ecossistema .NET 10 e ser um **projeto estritamente acadêmico, de portfólio técnico e demonstração arquitetural**.
 
 <p>
     <img src="Imagens/img1.png" alt="Dashboard de Finanças Pessoais" width="48%">
@@ -15,7 +15,7 @@ Uma aplicação web monolítica de alta performance desenvolvida em .NET 10 para
 
 - Fluxo de caixa customizado: módulo de controle de receitas e despesas com visões consolidadas e conversão nativa para o padrão de moeda brasileiro (PT-BR).
 
-- Segurança defensiva (antimanipulação): criptografia de chaves primárias nas URLs utilizando a biblioteca de `DataProtection` do .NET para impedir ID-Tampering (ataques de alteração de parâmetros).
+- Segurança defensiva (antimanipulação): criptografia de chaves primárias nas URLs utilizando a biblioteca de `DataProtection` do .NET para impedir ID-Tampering (ataques de alteração de parâmetros) preservando a experiência do usuário (UX) enquanto blinda os IDs internos.
 
 - Arquitetura desacoplada: implementação baseada em Clean Architecture, Domain-Driven Design (DDD) e Repository Pattern, garantindo isolamento total da camada de negócio em relação ao ORM (Entity Framework Core).
 
@@ -57,11 +57,11 @@ Abaixo está a estrutura relacional mapeada para suportar as regras de negócio 
 
 ## Boas Práticas
 
-- Blindagem contra ID-Tampering (segurança): os identificadores numéricos das entidades são criptografados na camada Web via IDataProtector antes de serem expostos na URL. Se houver tentativa de manipulação maliciosa, o sistema captura a CryptographicException e aborta a requisição.
+- Blindagem contra ID-Tampering (segurança): os identificadores numéricos das entidades são criptografados na camada Web via `IDataProtector` antes de serem expostos na URL. Se houver tentativa de manipulação maliciosa, o sistema captura a `CryptographicException` e aborta a requisição.
 
 - Tratamento de exceções relacionais: em conformidade com o princípio de Responsabilidade Única (SRP), a camada de serviço não conhece o EF Core. O tratamento de violações de integridade de chaves estrangeiras (ex: tentar apagar uma carteira com investimentos vinculados) é capturado via DbUpdateException diretamente dentro da Infra.Data, devolvendo um fluxo limpo de falha sem onerar a memória com Stack Traces globais.
 
-- Validação defensiva: uso rigoroso de string.IsNullOrWhiteSpace() na entrada de dados críticos, garantindo falha rápida (Fail-Fast) contra strings vazias ou nulas geradas no frontend, além de validação dos parâmetros blindando o sistema de ataques ID-Tampering.
+- Validação defensiva: uso rigoroso de `string.IsNullOrWhiteSpace()` na entrada de dados críticos, garantindo falha rápida (Fail-Fast) contra strings vazias ou nulas geradas no frontend, além de validação dos parâmetros blindando o sistema de ataques ID-Tampering.
 
 - Agrupamentos temporais otimizados: lógica avançada utilizando LINQ em memória para mapear e consolidar saldos retroativos mês a mês de forma encadeada, garantindo a montagem perfeita sem gerar múltiplas consultas desnecessárias ao banco de dados.  
 
@@ -90,9 +90,14 @@ docker compose -f docker-compose-postgre.yml up -d
 Navegue até a pasta raiz da solução e execute o comando:
 
 ```bash
+# 1. Restaura dependências e compila
 dotnet restore
 dotnet build
+
+# 2. Executa a Migration para montar o banco PostgreSQL no Docker
 dotnet ef database update --project FinancasPessoais.Infra.Data --startup-project FinancasPessoais.Web
+
+# 3. Inicia a aplicação Web
 dotnet run --project FinancasPessoais.Web
 ```
 
