@@ -109,12 +109,13 @@ namespace FinancasPessoais.Service.Services
             {
                 foreach (var itemInvestimento in investimentos)
                 {
-                    if (itemInvestimento.DTVencimento < hoje || itemInvestimento.FLLiquidado == true) continue;
-
                     foreach (var mesReferenca in meses)
                     {
                         var limiteMesReferencia = new DateTime(mesReferenca.Year, mesReferenca.Month, 1);
                         var inicioInvestimento = new DateTime(itemInvestimento.DTInvestimento.Year, itemInvestimento.DTInvestimento.Month, 1);
+
+                        if (itemInvestimento.DTVencimento < limiteMesReferencia || itemInvestimento.FLLiquidado == true) continue;
+
                         string chaveMes = mesReferenca.ToString("MM/yyyy");
 
                         if (inicioInvestimento <= limiteMesReferencia)
@@ -225,8 +226,9 @@ namespace FinancasPessoais.Service.Services
                 }
                 else
                 {
-                    diferencaAbsoluta = ultimo.VLInvestimentoHistorico;
-                    diferencaPercentual = 100;
+                    diferencaAbsoluta = ultimo.VLInvestimentoHistorico - ultimo.Investimento.VLInvestimento;
+                    if (ultimo.Investimento.VLInvestimento > 0) diferencaPercentual = ((ultimo.VLInvestimentoHistorico - ultimo.Investimento.VLInvestimento) / ultimo.Investimento.VLInvestimento) * 100;
+                    else if (ultimo.Investimento.VLInvestimento == 0 && ultimo.VLInvestimentoHistorico > 0) diferencaPercentual = 100;
                 }
 
                 var objeto = new RelatorioInvestimentoVariacaoDTO(investimento.Investimento.IDInvestimento, investimento.Investimento.NMInvestimento, investimento.Investimento.DTInvestimento, investimento.Investimento.VLSaldo, investimento.Investimento.DTVencimento, investimento.Investimento.PCTaxaRentabilidade, investimento.Investimento.FLLiquidado, diferencaAbsoluta, diferencaPercentual, investimento.Investimento.INTaxaPeriodicidade);

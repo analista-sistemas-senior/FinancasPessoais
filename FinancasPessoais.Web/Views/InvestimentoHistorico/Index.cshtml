@@ -60,10 +60,18 @@
                             <td>-</td>
                         }
                         <td>
-                            @investimento.PCTaxaRentabilidade
-                            %
-                            @Html.DisplayFor(modelItem => investimento.INTaxaPeriodicidade)
-                            (@investimento.InvestimentoTipoViewModel!.SGInvestimentoTipo)
+                            @if (investimento.PCTaxaRentabilidade == null)
+                            {
+                                <span>-</span>
+                            }
+                            else
+                            {
+                                @investimento.PCTaxaRentabilidade
+                                <text>% </text>
+                                @Html.DisplayFor(modelItem => investimento.INTaxaPeriodicidade)
+                                <text> </text>
+                                @investimento.InvestimentoTipoViewModel?.SGInvestimentoTipo
+                            }
                         </td>
                         <td>
                             @if (investimento.VLInvestimento > 0)
