@@ -33,8 +33,12 @@ namespace FinancasPessoais.Infra.Data.Repositories
 
         public async Task<Investimento> AtualizarInvestimento(Investimento investimento)
         {
+            var local = _context.Investimento.Local.FirstOrDefault(entry => entry.IDInvestimento == investimento.IDInvestimento);
+            if (local != null) _context.Entry(local).State = EntityState.Detached;
+
             _context.Investimento.Update(investimento);
             await _context.SaveChangesAsync();
+            _context.Entry(investimento).State = EntityState.Detached;
             return investimento;
         }
 

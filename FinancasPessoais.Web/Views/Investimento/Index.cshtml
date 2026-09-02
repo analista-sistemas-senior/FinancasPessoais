@@ -31,8 +31,8 @@
             <tbody>
                 @foreach (var investimento in Model)
                 {
-                    somaInvestimento += investimento.VLInvestimento;
-                    somaSaldo += investimento.VLSaldo;
+                    somaInvestimento += investimento.FLLiquidado == true || investimento.DTVencimento <= DateTime.Today ? 0 : investimento.VLInvestimento;
+                    somaSaldo += investimento.FLLiquidado == true || investimento.DTVencimento <= DateTime.Today ? 0 : investimento.VLSaldo;
                     <tr>
                         <td data-order="@investimento.DTInvestimento.ToString("yyyyMMddHHmmss")">@investimento.DTInvestimento.ToString("dd/MM/yyyy HH:mm")</td>
                         @if (investimento.DTVencimento.HasValue)
@@ -85,7 +85,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3"></td>
+                    <td colspan="3">Saldo de investimentos ativos:</td>
                     <td><span class="verde fw-semibold">@somaInvestimento.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span></td>
                     <td colspan="2"></td>
                     <td><span class="verde fw-semibold">@somaSaldo.ToString("C", new System.Globalization.CultureInfo("pt-BR"))</span></td>

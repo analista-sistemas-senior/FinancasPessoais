@@ -14,7 +14,7 @@ namespace FinancasPessoais.Service.Services
         public async Task<(decimal totalInvestimento, decimal totalJuro, decimal totalAporte, decimal totalSaque)> RetornarInvestimentosTotais(int idUsuario)
         {
             var investimentos = await _investimentoRepository.RetornarInvestimentosPorIdUsuario(idUsuario);
-            decimal totalInvestimentos = investimentos == null ? 0 : investimentos.Sum(i => i.VLSaldo);
+            decimal totalInvestimentos = investimentos == null ? 0 : investimentos.Where(i => i.FLLiquidado != true && (i.DTVencimento >= DateTime.Today || i.DTVencimento == null)).Sum(i => i.VLSaldo);
 
             decimal totalJuros = 0, totalAporte = 0, totalSaque = 0;
             var investimentosHistoricos = await _investimentoHistoricoRepository.RetornarInvestimentosHistoricosPorIdUsuario(idUsuario);
@@ -179,7 +179,7 @@ namespace FinancasPessoais.Service.Services
             var investimentos = await _investimentoRepository.RetornarInvestimentosPorIdUsuario(idUsuario);
             if (investimentos == null) return [];
 
-            var retorno = investimentos.GroupBy(i => i.InvestimentoTipo.SGInvestimentoTipo).Select(g => new RelatorioHomeDTO(g.Sum(i => i.VLSaldo), g.Key)).ToList();
+            var retorno = investimentos.Where(i => i.FLLiquidado != true && (i.DTVencimento >= DateTime.Today || i.DTVencimento == null)).GroupBy(i => i.InvestimentoTipo.SGInvestimentoTipo).Select(g => new RelatorioHomeDTO(g.Sum(i => i.VLSaldo), g.Key)).ToList();
 
             return retorno;
         }
